@@ -5,12 +5,14 @@ services:
     build: .
     container_name: minecraft-server
     ports:
-      - "25565:25565"
+      - "25565:25565" # Puerto para Java Edition
+      - "19132:19132/udp" # Puerto para Bedrock Edition (móviles/consolas)
     environment:
       # Configura la memoria según tus necesidades
       - MEMORY_MIN=1G
       - MEMORY_MAX=2G
       - SERVER_VERSION=latest
+      - ENABLE_GEYSER=true # Habilita soporte para Bedrock
     volumes:
       # Persiste los datos del mundo y configuraciones
       - minecraft-data:/minecraft
