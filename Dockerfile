@@ -16,9 +16,10 @@ COPY server.properties /minecraft/server.properties
 COPY eula.txt /minecraft/eula.txt
 COPY start.sh /minecraft/start.sh
 COPY healthcheck.sh /minecraft/healthcheck.sh
+COPY backup.sh /minecraft/backup.sh
 
 # Da permisos de ejecución a los scripts
-RUN chmod +x /minecraft/start.sh /minecraft/healthcheck.sh
+RUN chmod +x /minecraft/start.sh /minecraft/healthcheck.sh /minecraft/backup.sh
 
 # Expone el puerto del servidor de Minecraft Java Edition
 EXPOSE 25565

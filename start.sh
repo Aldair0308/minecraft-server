@@ -121,6 +121,15 @@ tick-rates:
       validatenearbypoi: -1
 EOF
 
+# Inicia el sistema de backups automáticos en segundo plano
+echo "💾 Iniciando sistema de backups automáticos..."
+chmod +x /minecraft/backup.sh
+/minecraft/backup.sh &
+BACKUP_PID=$!
+echo "✅ Sistema de backups iniciado (PID: $BACKUP_PID)"
+echo "   📦 Backups cada 5 minutos en /minecraft/backups"
+echo "   📚 Se mantendrán los últimos 12 backups (1 hora)"
+
 # Inicia el servidor con los parámetros de memoria configurados
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -128,6 +137,8 @@ echo "🎮 Iniciando servidor Minecraft Java Edition"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "   💾 Memoria: ${MEMORY_MIN} - ${MEMORY_MAX}"
 echo "   ⚠️  Pausa automática: DESACTIVADA (24/7)"
+echo "   💾 Auto-guardado: Cada 5 minutos"
+echo "   📦 Backups automáticos: Cada 5 minutos"
 echo ""
 echo "📡 PUERTOS DE CONEXIÓN:"
 echo "   🖥️  Java Edition (PC):      Puerto 25565"
@@ -136,6 +147,11 @@ echo ""
 echo "🌐 CÓMO CONECTARSE:"
 echo "   Obtén la dirección TCP Proxy de Railway en:"
 echo "   Settings → Networking → TCP Proxy"
+echo ""
+echo "💾 PERSISTENCIA:"
+echo "   ✅ El mundo se guarda automáticamente cada 5 minutos"
+echo "   ✅ Backups automáticos cada 5 minutos"
+echo "   ✅ Los datos persisten entre deployments"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
