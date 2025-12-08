@@ -1,3 +1,4 @@
+# Servidor Minecraft Java + Bedrock Edition - Actualizado
 # Usa la imagen oficial de Eclipse Temurin con Java 21 (recomendado para Minecraft 1.20+)
 FROM eclipse-temurin:21-jre-jammy
 
