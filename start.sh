@@ -39,12 +39,19 @@ if [ "$ENABLE_GEYSER" = "true" ]; then
     # Crea el directorio de configuración de Geyser
     mkdir -p Geyser-Standalone/config
     
+    # Detecta el puerto de Bedrock (usa variable de entorno o 19132 por defecto)
+    BEDROCK_PORT=${BEDROCK_PORT:-19132}
+    
+    echo "📝 Configurando Geyser..."
+    echo "   - Puerto Bedrock: $BEDROCK_PORT"
+    echo "   - Puerto Java: 25565"
+    
     # Crea la configuración de Geyser
-    cat > Geyser-Standalone/config/config.yml << 'EOF'
+    cat > Geyser-Standalone/config/config.yml << EOF
 # Configuración de Geyser para permitir conexiones desde Bedrock
 bedrock:
   address: 0.0.0.0
-  port: 19132
+  port: ${BEDROCK_PORT}
   clone-remote-port: false
   motd1: "§6Servidor Minecraft"
   motd2: "§aJava + Bedrock Edition"
@@ -87,11 +94,11 @@ EOF
     echo "✅ Geyser configurado para Bedrock Edition"
     
     # Inicia Geyser en segundo plano
-    echo "🎮 Iniciando Geyser (soporte Bedrock)..."
+    echo "🎮 Iniciando Geyser (soporte Bedrock) en puerto $BEDROCK_PORT..."
     java -Xms512M -Xmx512M -jar geyser.jar &
     GEYSER_PID=$!
     echo "✅ Geyser iniciado (PID: $GEYSER_PID)"
-    sleep 3
+    sleep 5
 fi
 
 # Crea el archivo de configuración para desactivar la pausa
@@ -115,10 +122,23 @@ tick-rates:
 EOF
 
 # Inicia el servidor con los parámetros de memoria configurados
-echo "🎮 Iniciando servidor Minecraft Java Edition con ${MEMORY_MIN} - ${MEMORY_MAX} de RAM..."
-echo "⚠️  Pausa automática DESACTIVADA - El servidor permanecerá activo 24/7"
-echo "📱 Jugadores de Java Edition: Conéctate al puerto 25565"
-echo "📱 Jugadores de Bedrock Edition: Conéctate al puerto 19132"
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🎮 Iniciando servidor Minecraft Java Edition"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "   💾 Memoria: ${MEMORY_MIN} - ${MEMORY_MAX}"
+echo "   ⚠️  Pausa automática: DESACTIVADA (24/7)"
+echo ""
+echo "📡 PUERTOS DE CONEXIÓN:"
+echo "   🖥️  Java Edition (PC):      Puerto 25565"
+echo "   📱 Bedrock Edition (Móvil): Puerto ${BEDROCK_PORT}"
+echo ""
+echo "🌐 CÓMO CONECTARSE:"
+echo "   Obtén la dirección TCP Proxy de Railway en:"
+echo "   Settings → Networking → TCP Proxy"
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
 
 exec java -Xms${MEMORY_MIN} -Xmx${MEMORY_MAX} \
     -XX:+UseG1GC \
