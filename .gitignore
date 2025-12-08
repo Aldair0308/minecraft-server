@@ -1,0 +1,19 @@
+# Archivos del servidor
+server.jar
+*.jar
+
+# Mundos y datos
+world/
+world_nether/
+world_the_end/
+logs/
+crash-reports/
+banned-ips.json
+banned-players.json
+ops.json
+whitelist.json
+usercache.json
+
+# Otros
+*.log
+.DS_Store
