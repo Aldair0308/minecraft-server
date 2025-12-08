@@ -1,4 +1,4 @@
-# Servidor Minecraft Java + Bedrock Edition - Actualizado
+# Servidor Minecraft Java + Bedrock Edition - Actualizado v2
 # Usa la imagen oficial de Eclipse Temurin con Java 21 (recomendado para Minecraft 1.20+)
 FROM eclipse-temurin:21-jre-jammy
 
@@ -7,7 +7,7 @@ WORKDIR /minecraft
 
 # Instala wget, curl, procps y otras utilidades necesarias
 RUN apt-get update && \
-    apt-get install -y wget curl jq procps unzip && \
+    apt-get install -y wget curl jq procps unzip bash && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -36,5 +36,6 @@ ENV ENABLE_GEYSER=true
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
     CMD /minecraft/healthcheck.sh
 
-# Ejecuta el script de inicio
+# Usa ENTRYPOINT + CMD para asegurar que el script se ejecute
+ENTRYPOINT ["/bin/bash"]
 CMD ["/minecraft/start.sh"]
