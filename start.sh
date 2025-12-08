@@ -21,6 +21,21 @@ else
     echo "✅ Servidor ya existe, usando versión existente"
 fi
 
+# Crea el archivo ops.json para dar permisos de operador
+echo "👑 Configurando operadores del servidor..."
+cat > ops.json << 'EOF'
+[
+  {
+    "uuid": "00000000-0000-0000-0000-000000000001",
+    "name": "Radial51",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]
+EOF
+echo "✅ Radial51 configurado como operador (nivel 4)"
+echo "   Puede usar todos los comandos: /tp, /weather, /time, /gamemode, etc."
+
 # Descarga e instala Geyser para soporte de Bedrock
 if [ "$ENABLE_GEYSER" = "true" ]; then
     echo "📱 Configurando soporte para Minecraft Bedrock (móviles y consolas)..."
