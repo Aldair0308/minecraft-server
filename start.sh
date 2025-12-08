@@ -56,9 +56,17 @@ if [ "$ENABLE_GEYSER" = "true" ]; then
     # Descarga Geyser standalone si no existe
     if [ ! -f "geyser.jar" ]; then
         echo "📥 Descargando Geyser (traductor Java-Bedrock)..."
-        GEYSER_URL=$(curl -s https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest | jq -r '.downloads.standalone.url')
-        wget -O geyser.jar "https://download.geysermc.org${GEYSER_URL}"
-        echo "✅ Geyser descargado correctamente"
+        # Usa la URL directa de la última versión estable
+        wget -O geyser.jar "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone"
+        
+        # Verifica que se descargó correctamente
+        if [ ! -s "geyser.jar" ] || file geyser.jar | grep -q "HTML"; then
+            echo "⚠️  Error al descargar Geyser, deshabilitando soporte Bedrock"
+            rm -f geyser.jar
+            ENABLE_GEYSER=false
+        else
+            echo "✅ Geyser descargado correctamente"
+        fi
     fi
     
     # Crea el directorio de configuración de Geyser
@@ -118,12 +126,14 @@ EOF
     
     echo "✅ Geyser configurado para Bedrock Edition"
     
-    # Inicia Geyser en segundo plano
-    echo "🎮 Iniciando Geyser (soporte Bedrock) en puerto $BEDROCK_PORT..."
-    java -Xms512M -Xmx512M -jar geyser.jar &
-    GEYSER_PID=$!
-    echo "✅ Geyser iniciado (PID: $GEYSER_PID)"
-    sleep 5
+    # Inicia Geyser en segundo plano solo si se descargó correctamente
+    if [ "$ENABLE_GEYSER" = "true" ] && [ -f "geyser.jar" ]; then
+        echo "🎮 Iniciando Geyser (soporte Bedrock) en puerto $BEDROCK_PORT..."
+        java -Xms512M -Xmx512M -jar geyser.jar &
+        GEYSER_PID=$!
+        echo "✅ Geyser iniciado (PID: $GEYSER_PID)"
+        sleep 5
+    fi
 fi
 
 # Crea el archivo de configuración para desactivar la pausa
