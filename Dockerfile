@@ -2,8 +2,8 @@
 # Usa la imagen oficial de Eclipse Temurin con Java 21 (recomendado para Minecraft 1.20+)
 FROM eclipse-temurin:21-jre-jammy
 
-# Establece el directorio de trabajo
-WORKDIR /minecraft
+# Establece el directorio de trabajo (aquí se guardará todo)
+WORKDIR /data
 
 # Instala wget, curl, procps y otras utilidades necesarias
 RUN apt-get update && \
@@ -12,14 +12,14 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copia los archivos de configuración
-COPY server.properties /minecraft/server.properties
-COPY eula.txt /minecraft/eula.txt
-COPY start.sh /minecraft/start.sh
-COPY healthcheck.sh /minecraft/healthcheck.sh
-COPY backup.sh /minecraft/backup.sh
+COPY server.properties /data/server.properties
+COPY eula.txt /data/eula.txt
+COPY start.sh /data/start.sh
+COPY healthcheck.sh /data/healthcheck.sh
+COPY backup.sh /data/backup.sh
 
 # Da permisos de ejecución a los scripts
-RUN chmod +x /minecraft/start.sh /minecraft/healthcheck.sh /minecraft/backup.sh
+RUN chmod +x /data/start.sh /data/healthcheck.sh /data/backup.sh
 
 # Expone el puerto del servidor de Minecraft Java Edition
 EXPOSE 25565
@@ -35,8 +35,8 @@ ENV ENABLE_GEYSER=true
 
 # Healthcheck para mantener el contenedor activo
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
-    CMD /minecraft/healthcheck.sh
+    CMD /data/healthcheck.sh
 
 # Usa ENTRYPOINT + CMD para asegurar que el script se ejecute
 ENTRYPOINT ["/bin/bash"]
-CMD ["/minecraft/start.sh"]
+CMD ["/data/start.sh"]
