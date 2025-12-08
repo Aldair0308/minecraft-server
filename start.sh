@@ -1,8 +1,16 @@
 #!/bin/bash
 
 echo "🚀 Iniciando servidor de Minecraft..."
-echo "💾 Directorio de trabajo: /data"
-echo "   Todo se guardará aquí y persistirá entre deployments"
+echo "💾 Directorio de trabajo: /data (volumen persistente)"
+echo "📁 Configuración base: /minecraft"
+
+# Copia archivos de configuración si no existen en /data
+if [ ! -f "/data/server.properties" ]; then
+    echo "📋 Copiando configuración inicial..."
+    cp /minecraft/server.properties /data/server.properties
+    cp /minecraft/eula.txt /data/eula.txt
+    echo "✅ Configuración copiada"
+fi
 
 # Si no existe el JAR del servidor, descargarlo
 if [ ! -f "server.jar" ]; then
