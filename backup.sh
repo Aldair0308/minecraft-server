@@ -3,8 +3,8 @@
 # Script de backup automático para Minecraft
 # Se ejecuta cada 5 minutos y crea backups del mundo
 
-BACKUP_DIR="/minecraft/backups"
-WORLD_DIR="/minecraft/world"
+BACKUP_DIR="/data/backups"
+WORLD_DIR="/data/world"
 MAX_BACKUPS=12  # Mantener últimos 12 backups (1 hora de historial)
 
 # Crea el directorio de backups si no existe
@@ -19,7 +19,7 @@ create_backup() {
     
     # Crea el backup comprimido
     tar -czf "${BACKUP_DIR}/${BACKUP_NAME}" \
-        -C /minecraft \
+        -C /data \
         world \
         world_nether \
         world_the_end \

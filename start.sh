@@ -2,6 +2,35 @@
 
 echo "🚀 Iniciando servidor de Minecraft..."
 
+# Configura el volumen único para persistencia
+echo "💾 Configurando persistencia con volumen único..."
+DATA_DIR="/data"
+
+# Crea el directorio de datos si no existe
+mkdir -p "$DATA_DIR"
+
+# Crea la estructura de directorios en el volumen
+echo "📁 Creando estructura de directorios en volumen persistente..."
+mkdir -p "$DATA_DIR/world"
+mkdir -p "$DATA_DIR/world_nether"
+mkdir -p "$DATA_DIR/world_the_end"
+mkdir -p "$DATA_DIR/backups"
+mkdir -p "$DATA_DIR/config"
+
+# Crea enlaces simbólicos desde /minecraft a /data
+echo "🔗 Configurando enlaces a volumen persistente..."
+ln -sf "$DATA_DIR/world" /minecraft/world
+ln -sf "$DATA_DIR/world_nether" /minecraft/world_nether
+ln -sf "$DATA_DIR/world_the_end" /minecraft/world_the_end
+ln -sf "$DATA_DIR/backups" /minecraft/backups
+
+echo "✅ Volumen configurado correctamente"
+echo "   📁 Mundo: $DATA_DIR/world"
+echo "   📁 Nether: $DATA_DIR/world_nether"
+echo "   📁 End: $DATA_DIR/world_the_end"
+echo "   📁 Backups: $DATA_DIR/backups"
+echo "   💾 Todo se guardará en el volumen persistente"
+
 # Si no existe el JAR del servidor, descargarlo
 if [ ! -f "server.jar" ]; then
     echo "📥 Descargando la última versión del servidor de Minecraft..."
