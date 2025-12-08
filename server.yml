@@ -1,0 +1,5 @@
+# Configuración de Paper/Spigot (si se usa)
+# Este archivo desactiva la pausa automática del servidor
+
+# Desactiva la pausa cuando no hay jugadores
+pause-when-empty-seconds=-1
