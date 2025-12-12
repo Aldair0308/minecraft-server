@@ -17,6 +17,7 @@ COPY eula.txt /minecraft/eula.txt
 COPY start.sh /minecraft/start.sh
 COPY healthcheck.sh /minecraft/healthcheck.sh
 COPY backup.sh /minecraft/backup.sh
+COPY user_jvm_args.txt /minecraft/user_jvm_args.txt
 
 # Da permisos de ejecución a los scripts
 RUN chmod +x /minecraft/start.sh /minecraft/healthcheck.sh /minecraft/backup.sh

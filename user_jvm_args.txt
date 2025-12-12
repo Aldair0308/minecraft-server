@@ -1,0 +1,2 @@
+# Este archivo contiene argumentos JVM personalizados para Forge
+# Puedes agregar tus propios argumentos aquí si es necesario
