@@ -19,6 +19,9 @@ COPY healthcheck.sh /minecraft/healthcheck.sh
 COPY backup.sh /minecraft/backup.sh
 COPY user_jvm_args.txt /minecraft/user_jvm_args.txt
 
+# Copia los mods del servidor
+COPY server-mods/ /minecraft/server-mods/
+
 # Da permisos de ejecución a los scripts
 RUN chmod +x /minecraft/start.sh /minecraft/healthcheck.sh /minecraft/backup.sh
 
