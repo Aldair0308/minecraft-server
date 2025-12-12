@@ -1,6 +1,6 @@
 # Archivos del servidor
 server.jar
-*.jar
+
 
 # Mundos y datos
 world/
