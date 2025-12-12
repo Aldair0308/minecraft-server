@@ -229,14 +229,18 @@ tick-rates:
       validatenearbypoi: -1
 EOF
 
-# Inicia el sistema de backups automáticos en segundo plano
-echo "💾 Iniciando sistema de backups automáticos..."
-chmod +x /minecraft/backup.sh
-/minecraft/backup.sh &
-BACKUP_PID=$!
-echo "✅ Sistema de backups iniciado (PID: $BACKUP_PID)"
-echo "   📦 Backups cada 25 minutos en /minecraft/backups"
-echo "   📚 Se mantendrán los últimos 12 backups (5 horas)"
+# BACKUPS DESHABILITADOS - Ahorra espacio en Railway
+# Si tienes más espacio, descomenta esta sección
+# echo "💾 Iniciando sistema de backups automáticos..."
+# chmod +x /minecraft/backup.sh
+# /minecraft/backup.sh &
+# BACKUP_PID=$!
+# echo "✅ Sistema de backups iniciado (PID: $BACKUP_PID)"
+# echo "   📦 Backups cada 25 minutos en /minecraft/backups"
+# echo "   📚 Se mantendrán los últimos 12 backups (5 horas)"
+
+echo "⚠️  Backups automáticos DESHABILITADOS (ahorra espacio)"
+echo "   Usa comandos manuales para guardar: /save-all"
 
 # Inicia el servidor con los parámetros de memoria configurados
 echo ""
@@ -248,7 +252,7 @@ echo "   🔥 Loader: Forge 47.3.0"
 echo "   📦 Mods: $(ls -1 mods/*.jar 2>/dev/null | wc -l) mods cargados"
 echo "   ⚠️  Pausa automática: DESACTIVADA (24/7)"
 echo "   💾 Auto-guardado: Cada 5 minutos"
-echo "   📦 Backups automáticos: Cada 25 minutos"
+echo "   ⚠️  Backups: DESHABILITADOS (ahorra espacio)"
 echo ""
 echo "📡 PUERTOS DE CONEXIÓN:"
 echo "   🖥️  Java Edition (PC):      Puerto 25565"
