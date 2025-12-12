@@ -53,6 +53,18 @@ CurseForge bloquea descargas automáticas. Debes descargar los mods manualmente 
 - **Guardar en**: `mods-download\both\`
 - **Descripción**: Permite elegir encantamientos específicos sin azar
 
+### 9. Collective - Dependencia de Tree Harvester
+- **Enlace**: https://www.curseforge.com/minecraft/mc-mods/collective/files/5062681
+- **Archivo**: `collective-1.20.1-7.87.jar`
+- **Guardar en**: `mods-download\both\`
+- **Descripción**: Librería requerida por Tree Harvester
+
+### 10. Puzzleslib - Dependencia de Enchanting Infuser
+- **Enlace**: https://www.curseforge.com/minecraft/mc-mods/puzzles-lib/files/5315889
+- **Archivo**: `PuzzlesLib-v8.1.33-1.20.1-Forge.jar`
+- **Guardar en**: `mods-download\both\`
+- **Descripción**: Librería requerida por Enchanting Infuser
+
 <!-- MODS REMOVIDOS (No disponibles para 1.20.1):
 - MrCrayfish's Gun Mod + Framework - No hay versión estable para 1.20.1
 - Loot Beams - No compatible con 1.20.1
@@ -113,10 +125,10 @@ CurseForge bloquea descargas automáticas. Debes descargar los mods manualmente 
 
 ## 📊 Resumen Total
 
-- **Mods para servidor + cliente (both)**: 8 archivos
+- **Mods para servidor + cliente (both)**: 10 archivos
 - **Mods solo para servidor**: 4 archivos
 - **Mods solo para cliente**: 4 archivos
-- **TOTAL**: 16 archivos .jar
+- **TOTAL**: 18 archivos .jar
 
 <!-- Nota: Se removieron 3 mods que no tienen versión estable para 1.20.1:
   - MrCrayfish's Gun Mod
@@ -137,6 +149,8 @@ CurseForge bloquea descargas automáticas. Debes descargar los mods manualmente 
 - [ ] JEI
 - [ ] Tree Harvester
 - [ ] Enchanting Infuser
+- [ ] Collective (dependencia)
+- [ ] Puzzleslib (dependencia)
 
 ### Solo Servidor
 - [ ] Better Village
