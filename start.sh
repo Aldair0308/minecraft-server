@@ -1,22 +1,20 @@
 #!/bin/bash
 
 echo "🚀 Iniciando servidor de Minecraft..."
-echo "💾 Directorio de trabajo: /data (volumen persistente)"
-echo "📁 Configuración base: /minecraft"
+echo "⚠️  MODO EFÍMERO: El mundo NO se guardará al reiniciar"
+echo "📁 Directorio de trabajo: /tmp/minecraft (temporal)"
 
-# Copia archivos de configuración si no existen en /data
-if [ ! -f "/data/server.properties" ]; then
-    echo "📋 Copiando configuración inicial..."
-    cp /minecraft/server.properties /data/server.properties
-    cp /minecraft/eula.txt /data/eula.txt
-    echo "✅ Configuración copiada"
-fi
+# Cambia al directorio temporal
+cd /tmp
+mkdir -p minecraft
+cd minecraft
 
-# Copia user_jvm_args.txt si no existe (requerido por Forge)
-if [ ! -f "/data/user_jvm_args.txt" ]; then
-    cp /minecraft/user_jvm_args.txt /data/user_jvm_args.txt
-    echo "✅ Archivo user_jvm_args.txt copiado"
-fi
+# Copia archivos de configuración
+echo "📋 Copiando configuración inicial..."
+cp /minecraft/server.properties ./server.properties
+cp /minecraft/eula.txt ./eula.txt
+cp /minecraft/user_jvm_args.txt ./user_jvm_args.txt
+echo "✅ Configuración copiada"
 
 # Si no existe el JAR del servidor Forge, descargarlo e instalarlo
 if [ ! -f "libraries/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-server.jar" ]; then
@@ -250,22 +248,20 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo "   💾 Memoria: ${MEMORY_MIN} - ${MEMORY_MAX}"
 echo "   🔥 Loader: Forge 47.3.0"
 echo "   📦 Mods: $(ls -1 mods/*.jar 2>/dev/null | wc -l) mods cargados"
-echo "   ⚠️  Pausa automática: DESACTIVADA (24/7)"
-echo "   💾 Auto-guardado: Cada 5 minutos"
-echo "   ⚠️  Backups: DESHABILITADOS (ahorra espacio)"
+echo "   ⚠️  MODO EFÍMERO: Mundo temporal (no persiste)"
+echo "   ⚠️  Backups: DESHABILITADOS"
 echo ""
 echo "📡 PUERTOS DE CONEXIÓN:"
-echo "   🖥️  Java Edition (PC):      Puerto 25565"
-echo "   📱 Bedrock Edition (Móvil): Puerto ${BEDROCK_PORT}"
+echo "   🖥️  Java Edition (PC): Puerto 25565"
 echo ""
 echo "🌐 CÓMO CONECTARSE:"
 echo "   Obtén la dirección TCP Proxy de Railway en:"
 echo "   Settings → Networking → TCP Proxy"
 echo ""
-echo "💾 PERSISTENCIA:"
-echo "   ✅ El mundo se guarda automáticamente cada 5 minutos"
-echo "   ✅ Backups automáticos cada 25 minutos"
-echo "   ✅ Los datos persisten entre deployments"
+echo "⚠️  IMPORTANTE:"
+echo "   ❌ El mundo NO se guardará al reiniciar el servidor"
+echo "   ❌ Esto es temporal hasta solucionar el problema de espacio"
+echo "   ✅ Puedes jugar normalmente mientras el servidor esté activo"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
