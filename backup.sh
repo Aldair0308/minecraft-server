@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Script de backup automático para Minecraft
-# Se ejecuta cada 5 minutos y crea backups del mundo
+# Se ejecuta cada 25 minutos y crea backups del mundo
 
 BACKUP_DIR="/data/backups"
 WORLD_DIR="/data/world"
-MAX_BACKUPS=12  # Mantener últimos 12 backups (1 hora de historial)
+MAX_BACKUPS=12  # Mantener últimos 12 backups (5 horas de historial)
 
 # Crea el directorio de backups si no existe
 mkdir -p "$BACKUP_DIR"
@@ -44,9 +44,9 @@ create_backup() {
     fi
 }
 
-# Loop infinito que crea backups cada 5 minutos
+# Loop infinito que crea backups cada 25 minutos
 echo "🔄 Iniciando sistema de backups automáticos"
-echo "⏱️  Frecuencia: cada 5 minutos"
+echo "⏱️  Frecuencia: cada 25 minutos"
 echo "💾 Directorio: $BACKUP_DIR"
 echo "📦 Backups a mantener: $MAX_BACKUPS"
 echo ""
@@ -57,6 +57,6 @@ sleep 600
 
 while true; do
     create_backup
-    echo "⏳ Próximo backup en 5 minutos..."
-    sleep 300  # 5 minutos
+    echo "⏳ Próximo backup en 25 minutos..."
+    sleep 1500  # 25 minutos
 done

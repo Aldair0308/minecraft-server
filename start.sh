@@ -12,23 +12,41 @@ if [ ! -f "/data/server.properties" ]; then
     echo "✅ Configuración copiada"
 fi
 
-# Si no existe el JAR del servidor, descargarlo
-if [ ! -f "server.jar" ]; then
-    echo "📥 Descargando la última versión del servidor de Minecraft..."
+# Si no existe el JAR del servidor Forge, descargarlo e instalarlo
+if [ ! -f "libraries/net/minecraftforge/forge/1.20.1-47.3.0/forge-1.20.1-47.3.0-server.jar" ]; then
+    echo "📥 Descargando Forge 1.20.1-47.3.0..."
     
-    # Obtiene la última versión estable desde la API de Mojang
-    LATEST_VERSION=$(curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq -r '.latest.release')
-    echo "📌 Versión detectada: $LATEST_VERSION"
+    # Descarga el instalador de Forge
+    FORGE_VERSION="1.20.1-47.3.0"
+    FORGE_INSTALLER="forge-${FORGE_VERSION}-installer.jar"
     
-    # Obtiene la URL del servidor
-    VERSION_URL=$(curl -s https://launchermeta.mojang.com/mc/game/version_manifest.json | jq -r --arg VERSION "$LATEST_VERSION" '.versions[] | select(.id == $VERSION) | .url')
-    SERVER_URL=$(curl -s "$VERSION_URL" | jq -r '.downloads.server.url')
+    wget -O "$FORGE_INSTALLER" "https://maven.minecraftforge.net/net/minecraftforge/forge/${FORGE_VERSION}/${FORGE_INSTALLER}"
     
-    # Descarga el JAR del servidor
-    wget -O server.jar "$SERVER_URL"
-    echo "✅ Servidor descargado correctamente"
+    echo "🔧 Instalando Forge..."
+    java -jar "$FORGE_INSTALLER" --installServer
+    
+    echo "✅ Forge instalado correctamente"
+    
+    # Limpia el instalador
+    rm -f "$FORGE_INSTALLER"
+    rm -f "$FORGE_INSTALLER.log"
 else
-    echo "✅ Servidor ya existe, usando versión existente"
+    echo "✅ Forge ya está instalado"
+fi
+
+# Crea el directorio de mods si no existe
+mkdir -p mods
+echo "📦 Directorio de mods listo"
+
+# Copia los mods desde la imagen si existen
+if [ -d "/minecraft/server-mods" ] && [ "$(ls -A /minecraft/server-mods 2>/dev/null)" ]; then
+    echo "📥 Copiando mods al servidor..."
+    cp -n /minecraft/server-mods/*.jar mods/ 2>/dev/null || true
+    MOD_COUNT=$(ls -1 mods/*.jar 2>/dev/null | wc -l)
+    echo "✅ $MOD_COUNT mods disponibles"
+else
+    echo "⚠️  No se encontraron mods pre-instalados"
+    echo "   Puedes agregar mods manualmente a la carpeta /data/mods"
 fi
 
 # Crea el archivo ops.json para dar permisos de operador
@@ -162,18 +180,20 @@ chmod +x /minecraft/backup.sh
 /minecraft/backup.sh &
 BACKUP_PID=$!
 echo "✅ Sistema de backups iniciado (PID: $BACKUP_PID)"
-echo "   📦 Backups cada 5 minutos en /minecraft/backups"
-echo "   📚 Se mantendrán los últimos 12 backups (1 hora)"
+echo "   📦 Backups cada 25 minutos en /minecraft/backups"
+echo "   📚 Se mantendrán los últimos 12 backups (5 horas)"
 
 # Inicia el servidor con los parámetros de memoria configurados
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🎮 Iniciando servidor Minecraft Java Edition"
+echo "🎮 Iniciando servidor Minecraft 1.20.1 con Forge"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "   💾 Memoria: ${MEMORY_MIN} - ${MEMORY_MAX}"
+echo "   🔥 Loader: Forge 47.3.0"
+echo "   📦 Mods: $(ls -1 mods/*.jar 2>/dev/null | wc -l) mods cargados"
 echo "   ⚠️  Pausa automática: DESACTIVADA (24/7)"
 echo "   💾 Auto-guardado: Cada 5 minutos"
-echo "   📦 Backups automáticos: Cada 5 minutos"
+echo "   📦 Backups automáticos: Cada 25 minutos"
 echo ""
 echo "📡 PUERTOS DE CONEXIÓN:"
 echo "   🖥️  Java Edition (PC):      Puerto 25565"
@@ -185,7 +205,7 @@ echo "   Settings → Networking → TCP Proxy"
 echo ""
 echo "💾 PERSISTENCIA:"
 echo "   ✅ El mundo se guarda automáticamente cada 5 minutos"
-echo "   ✅ Backups automáticos cada 5 minutos"
+echo "   ✅ Backups automáticos cada 25 minutos"
 echo "   ✅ Los datos persisten entre deployments"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -213,5 +233,4 @@ exec java -Xms${MEMORY_MIN} -Xmx${MEMORY_MAX} \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
     -Dcom.mojang.eula.agree=true \
-    -Dpaper.playerconnection.keepalive=30 \
-    -jar server.jar --nogui
+    @user_jvm_args.txt @libraries/net/minecraftforge/forge/1.20.1-47.3.0/unix_args.txt --nogui "$@"
